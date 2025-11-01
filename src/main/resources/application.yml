@@ -15,5 +15,5 @@ spring:
     show-sql: true
 
 app:
-  jwtSecret: /J+I4PRLZWdqM/xq9zFF7H2RgN1Z07aRtw5PE92+xklFJOyhWl/rInNi2zsJm+kkfBVYmYfskJxIRM5RSO6FtA==
+  jwtSecret: oIQ0rZZcCa8O7nrjnzbzEwGlV5ayht3Fu0Fj8ub52VSKBTrpt4FLfywzXVN6CPg3TvrN44E1xWet1K01iIuB3g==
   jwtExpirationMs: 86400000 # 24 часа

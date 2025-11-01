@@ -65,11 +65,10 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/vacancies").permitAll() // Только GET /api/vacancies доступен всем
-                        .requestMatchers(HttpMethod.GET, "/api/vacancies/{id}").permitAll() // И GET /api/vacancies/{id}
-                        // POST, PUT, DELETE для /api/vacancies требуют аутентификации и, как правило, ADMIN
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // Только админ
-                        .anyRequest().authenticated() // Остальные запросы требуют аутентификации
+                        .requestMatchers(HttpMethod.GET, "/api/vacancies").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/vacancies/{id}").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // Теперь включает /api/admin/users
+                        .anyRequest().authenticated()
                 );
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

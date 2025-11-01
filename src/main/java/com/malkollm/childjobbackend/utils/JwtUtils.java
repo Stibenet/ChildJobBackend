@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.Base64; // Убедитесь, что этот импорт есть
 import java.util.List;
-import java.util.Base64; // Добавьте импорт
 import java.util.stream.Collectors;
 
 @Component
@@ -27,7 +27,7 @@ public class JwtUtils {
     @Value("${app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    // Метод для получения ключа из строки
+    // Метод для получения ключа из строки Base64
     private SecretKey getSigningKey() {
         // Декодируем строку в байты и создаём ключ
         byte[] keyBytes = Base64.getDecoder().decode(jwtSecret);
@@ -46,13 +46,13 @@ public class JwtUtils {
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512) // Убедитесь, что используете HS512
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512) // Используем метод
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey()) // Используем наш метод
+                .setSigningKey(getSigningKey()) // Используем метод
                 .build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
@@ -60,7 +60,7 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey()) // Используем наш метод
+                    .setSigningKey(getSigningKey()) // Используем метод
                     .build()
                     .parseClaimsJws(authToken);
             return true;
