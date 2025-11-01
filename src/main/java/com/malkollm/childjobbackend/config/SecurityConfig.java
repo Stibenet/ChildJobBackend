@@ -2,6 +2,7 @@ package com.malkollm.childjobbackend.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -64,10 +65,11 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/vacancies").permitAll()
-                        .requestMatchers("/api/vacancies/**").permitAll() // <-- Добавьте эту строку, чтобы разрешить все GET к вакансиям
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/vacancies").permitAll() // Только GET /api/vacancies доступен всем
+                        .requestMatchers(HttpMethod.GET, "/api/vacancies/{id}").permitAll() // И GET /api/vacancies/{id}
+                        // POST, PUT, DELETE для /api/vacancies требуют аутентификации и, как правило, ADMIN
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // Только админ
+                        .anyRequest().authenticated() // Остальные запросы требуют аутентификации
                 );
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
