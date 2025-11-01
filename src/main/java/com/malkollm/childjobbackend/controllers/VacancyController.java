@@ -27,7 +27,7 @@ public class VacancyController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/getAllActiveVacancies")
     public ResponseEntity<List<Vacancy>> getAllActiveVacancies() {
         List<Vacancy> vacancies = vacancyRepository.findByIsActiveTrue();
         return ResponseEntity.ok(vacancies);
