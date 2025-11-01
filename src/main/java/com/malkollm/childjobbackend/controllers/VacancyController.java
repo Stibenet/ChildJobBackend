@@ -4,6 +4,7 @@ import com.malkollm.childjobbackend.models.Vacancy;
 import com.malkollm.childjobbackend.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class VacancyController {
     private VacancyRepository vacancyRepository;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Vacancy> createVacancy(@RequestBody Vacancy vacancy) {
         Vacancy savedVacancy = vacancyRepository.save(vacancy);
         return ResponseEntity.ok(savedVacancy);
@@ -41,6 +43,7 @@ public class VacancyController {
     }
 
     @PutMapping("/{id}/toggle-active")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Vacancy> toggleVacancyActive(@PathVariable Long id) {
         return vacancyRepository.findById(id).map(vacancy -> {
             vacancy.setIsActive(!vacancy.getIsActive());

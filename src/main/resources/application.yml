@@ -3,9 +3,17 @@ spring:
     url: jdbc:postgresql://localhost:5434/child_job_db
     username: Malkollm
     password: f123456987
+  sql:
+    init:
+      mode: always
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+app:
+  jwtSecret: /J+I4PRLZWdqM/xq9zFF7H2RgN1Z07aRtw5PE92+xklFJOyhWl/rInNi2zsJm+kkfBVYmYfskJxIRM5RSO6FtA==
+  jwtExpirationMs: 86400000 # 24 часа
